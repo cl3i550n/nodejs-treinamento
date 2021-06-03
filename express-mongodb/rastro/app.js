@@ -1,6 +1,27 @@
-const { request } = require('express');
 const express = require('express');
 // console.log(`express: ${typeof(express)} | constructor: ${express.constructor.name}`);
+
+// Configuração do Mongoose
+const mongoose = require('mongoose');
+
+// Para conectar com o MongoDB, pelo mongoose
+mongoose.connect(
+    'mongodb://localhost:27017/rastro', // String de conexão
+    { 
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    }
+);
+
+// Classe schema do Mongoose permite definir a estrutura do mongoDB
+mongoose.Schema;
+
+Schema(
+    {
+        codigoRastreador
+    }
+)
 
 const app = express();
 // console.log(`app: ${typeof(app)} | constructor: ${app.constructor.name}`);
