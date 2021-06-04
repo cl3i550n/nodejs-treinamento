@@ -15,13 +15,21 @@ mongoose.connect(
 );
 
 // Classe schema do Mongoose permite definir a estrutura do mongoDB
-mongoose.Schema;
+const Schema = mongoose.Schema;
 
-Schema(
+// Schema() Permite definir a estrutura da função.
+const rastreadorSchema = Schema(
     {
-        codigoRastreador
+        codigoRastreador: {type: String, required: true, index: {unique: true}},
+        placaVeiculo: {type: String, required: true},
+        cpfCliente: {type: String, required: true}
     }
-)
+);
+
+// Model() Criar coleção
+mongoose.model('rastreadores' /*nome da coleção*/, rastreadorSchema);
+
+mongoose.disconnect();
 
 const app = express();
 // console.log(`app: ${typeof(app)} | constructor: ${app.constructor.name}`);
