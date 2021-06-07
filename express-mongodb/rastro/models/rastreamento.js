@@ -1,3 +1,5 @@
+// Primeiro criar em Models depois Controllers
+
 const mongoose = require('mongoose');
 
 module.exports = (app) => {
