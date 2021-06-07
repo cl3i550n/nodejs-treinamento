@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const rastreador = require('./rastreador');
 
 module.exports = (app) => {
 
@@ -9,11 +10,14 @@ module.exports = (app) => {
             console.log(request.body);
 
             const Rastreamento = app.models.rastreamento;
+            const Rastreador = app.models.rastreador;
+
             const rastreamento = new Rastreamento(request.body);
             console.log(rastreamento);
 
             if (!rastreamento.dataHora) {
-                rastreamento.dataHora = new Date;
+                let now = new Date();
+                rastreamento.dataHora = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString();
             }
             console.log(rastreamento);
 
@@ -26,20 +30,40 @@ module.exports = (app) => {
                     useCreateIndex: true
                 }
             ).then(() => {
-                Rastreamento.create(rastreamento)
-                    .then((resultado) => {
-                        console.log(`Rastreamento do Rastreador ${rastreamento.codigoRastreador} cadastrado com sucesso.`);
-                        console.log(resultado);
-                        mongoose.disconnect();
-                        response.status(200).send(resultado);
+                Rastreador.find({ codigoRastreador: rastreamento.codigoRastreador })
+                    .then((listaRastreador) => {
+                        console.log(`listaRastreador:`);
+                        console.log(typeof (listaRastreador));
+                        console.log(listaRastreador);
+                        // se a busca na coleção 'rastreadores' retornar algo,
+                        // o listaRastreador (array) vem com tamanho maior que zero
+                        if (listaRastreador.length > 0) {
+                            Rastreamento.create(rastreamento)
+                                .then((resultado) => {
+                                    console.log(`Rastreamento do rastreador ${rastreamento.codigoRastreador} cadastrado com sucesso.`);
+                                    console.log(resultado);
+                                    mongoose.disconnect();
+                                    response.status(200).send(resultado);
+                                })
+                                .catch((erro) => {
+                                    console.log(`Erro ao cadastrar o Rastreamento: ${erro}`);
+                                    console.log(erro);
+                                    mongoose.disconnect();
+                                    response.status(500).send(`Erro ao cadastrar o Rastreamento: ${erro}`);
+                                });
+                        } else {
+                            console.log(`Rastreador de codigoRastreador: ${rastreamento.codigoRastreador} não localizado no cadastro.`);
+                            mongoose.disconnect();
+                            response.status(404).send(`Rastreador de codigoRastreador: ${rastreamento.codigoRastreador} não localizado no cadastro.`);
+                        }
                     })
-                    .catch((erro) => {
-                        console.log(`Erro ao cadastrar o Rastreamento: ${erro}`);
+                    .catch(() => {
+                        console.log(`Erro ao localizar o cadastrar do Rastreador: ${erro}`);
                         console.log(erro);
                         mongoose.disconnect();
-                        response.status(500).send(`Erro ao cadastrar o Rastreamento: ${erro}`);
+                        response.status(500).send(`Erro ao localizar o cadastrar do Rastreador: ${erro}`);
                     });
-            }).catch(() => {
+            }).catch((erro) => {
                 console.log(`Erro ao conectar no banco MongoDB: ${erro}`);
                 console.log(erro);
                 response.status(500).send(`Erro ao conectar no banco MongoDB: ${erro}`);
