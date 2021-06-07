@@ -21,7 +21,7 @@ module.exports = (app) => {
             // console.log(rastreador);
             
             mongoose.connect(
-                'mongodb://localhost:27017/rastro-dev', // string de conexão
+                'mongodb://localhost:27017/rastro', // string de conexão
                 {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
