@@ -1,9 +1,9 @@
-// Primeiro criar em Models depois Controllers
-
 const mongoose = require('mongoose');
 
 module.exports = (app) => {
+
     const Schema = mongoose.Schema;
+
     const rastreamentoSchema = Schema(
         {
             codigoRastreador: { type: String, required: true },
@@ -12,6 +12,9 @@ module.exports = (app) => {
             dataHora: { type: Date, required: true }
         }
     );
+
     const Rastreamento = mongoose.model('rastreamentos', rastreamentoSchema);
+
     return Rastreamento;
+
 }

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
-  "author": "ivolapuma",
+  "author": "Cleisson",
   "license": "ISC",
   "dependencies": {
     "consign": "^0.1.6",
