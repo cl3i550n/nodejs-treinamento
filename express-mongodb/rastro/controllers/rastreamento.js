@@ -90,13 +90,13 @@ module.exports = (app) => {
             } else {
 
                 mongoose.connect(
-                    'mongodb://localhost:27017/rastro-dev',
+                    'mongodb://localhost:27017/rastro',
                     {
                         useNewUrlParser: true,
                         useUnifiedTopology: true,
                         useCreateIndex: true
-                    }
-                )
+                    })
+
                     .then(() => {
 
                         const Rastreamento = app.models.rastreamento;
