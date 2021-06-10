@@ -2,7 +2,7 @@ const express = require('express');
 // console.log(`express: ${typeof(express)} | constructor:${express.constructor.name}`);
 
 const consign = require('consign');
-console.log(`consign: ${typeof(consign)} | constructor:${consign.constructor.name}`);
+console.log(`consign: ${typeof (consign)} | constructor:${consign.constructor.name}`);
 
 const app = express();
 // console.log(`app: ${typeof(app)} | constructor:${app.constructor.name}`);
@@ -12,6 +12,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-consign().include('models').then('controllers').then('routes').into(app);
+consign()
+    .include('constantes')
+    .then('models')
+    .then('controllers')
+    .then('routes')
+    .into(app);
 
-app.listen(3000 /*porta*/, ()=>console.log('Servidor rodando na porta 3000...'));
+console.log(app.constantes.db.connection);
+console.log(app.constantes.db.connectionParams);
+
+app.listen(app.constantes.app.porta /*porta*/, () => console.log(`Servidor rodando na porta ${app.constantes.app.porta}...`));

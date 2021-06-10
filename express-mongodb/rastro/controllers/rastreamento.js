@@ -24,12 +24,8 @@ module.exports = (app) => {
 
             // aqui vamos colocar a lógica do serviço...
             mongoose.connect(
-                'mongodb://localhost:27017/rastro',
-                {
-                    useNewUrlParser: true,
-                    useUnifiedTopology: true,
-                    useCreateIndex: true
-                }
+                app.constantes.db.connection,
+                app.constantes.db.connectionParams
             ).then(() => {
 
                 Rastreador.find({ codigoRastreador: rastreamento.codigoRastreador })
@@ -90,13 +86,9 @@ module.exports = (app) => {
             } else {
 
                 mongoose.connect(
-                    'mongodb://localhost:27017/rastro',
-                    {
-                        useNewUrlParser: true,
-                        useUnifiedTopology: true,
-                        useCreateIndex: true
-                    })
-
+                    app.constantes.db.connection,
+                    app.constantes.db.connectionParams
+                )
                     .then(() => {
 
                         const Rastreamento = app.models.rastreamento;
